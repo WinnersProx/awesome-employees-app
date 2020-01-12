@@ -4,6 +4,7 @@ import PassportJwt from 'passport-jwt';
 import User from '../models/user';
 
 dotenv.config();
+
 let JwtStrategy = PassportJwt.Strategy;
 let ExtractJwt = PassportJwt.ExtractJwt;
 const { SECRET } = process.env;
@@ -13,7 +14,7 @@ passport.use('jwt', new JwtStrategy({
   secretOrKey: SECRET,
   passReqToCallback : true
 }, async (req, jwtPayload, done) => {
-	const user = await User.findbyField('email', 'users', jwtPayload.email);
+	const user = await User.findbyField('email', 'employees', jwtPayload.email);
   if(user){
     return done(null, user);
   }

@@ -49,16 +49,15 @@ export default  {
       return userHelper.respond(res, 400, "error", 'All fields are required "(email and password)"');
     }
     else{
-      let user = await User.findbyField('email', 'users', email);
+      let user = await User.findbyField('email', 'employees', email);
       if(!user){
         return userHelper.respond(res, 404, "error", "user not found");
       }
       else{
-        if(!userHelper.comparePasswords(password, user.password)){
+        if(!userHelper.comparePasswords(password, user.password))
           return userHelper.respond(res, 400, "error","your password is invalid");
-        }
-        req.user = user;
       }
+      req.user = user;
     }
     next();
   },
@@ -91,11 +90,11 @@ export default  {
     }
     next();
   },
-  isSuperAdmin : (req, res, next) => {
-    const { role } = req.user;
-    if(role !== 3){
-      return userHelper.respond(res, 403, "error", "Only Super admins can perform this action");
-    }
+  isManager : (req, res, next) => {
+    const { position } = req.user;
+    if(position !== 'manager')
+      return userHelper.respond(res, 403, "error", "You are not allowed to access this resource");
+    
     next();
   },
   isAdminOrSuper : (req, res, next) => {

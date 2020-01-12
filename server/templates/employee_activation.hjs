@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <style>
+    body{
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      height: 100vh;
+      margin: 0;
+      padding-top: 20vh;
+      box-sizing: border-box;
+      font-family: 'Nanum Gothic', sans-serif;
+      background: linear-gradient(#eee9f2, #f1edf4);
+    }
+
+    .box-container {
+      background: white;
+      padding: 5vh;
+      width: 80%;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      display: block;
+      padding: 11px;
+      border-radius: 15rem;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: #c43894;
+    }
+    .text-primary{
+      color: #c43894;
+    }
+
+    .mt-5 {
+      margin-top: 5vh;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="box-container">
+      <h1>Activate your account!</h1>
+      <div>Hey {{{ full_name }}},<br><br>
+        Congrats once again, We invite you to officialy become an
+        <strong class="text-primary">Awesomity Lab</strong> employee
+        <br><br> You're one step closer to your career growth.
+        Simply click the button below to verify your email address within one day.
+        <br>
+        Your password is : <strong>{{{ password }}}</strong>.
+      </div>
+      <a style="color: white" class="btn btn-primary mt-5" href={{{url}}} target="_blank">Activate my account now</a>
+      <br>
+      Can't wait,<br><br>
+      Your friends at <strong class="text-primary">Awesomity Lab!</strong>
+      <br><br>
+      Learn more about us <a href="https://awesomity.rw" class="text-primary" target="_blank">here</a>
+    </div>
+  </div>
+</body>
+
+</html>

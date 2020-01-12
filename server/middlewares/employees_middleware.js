@@ -3,12 +3,12 @@ import jwt from 'jsonwebtoken';
 import userHelper from '../helpers/user_helper';
 import User from '../models/user';
 
-const userSchema = Joi.object().keys({
+const employeeSchema = Joi.object().keys({
   id : Joi.number().integer(),
   email : Joi.string().email({minDomainSegments : 2}).required(),
   password : Joi.string().min(6),
   full_name : Joi.string().min(6).max(20).required(),
-  national_id  : Joi.number().integer().min(16).max(16).required(),
+  national_id  : Joi.number().integer().min(16).required(),
   phone: Joi.string().min(13).max(13).required(),
   birth_date: Joi.date(),
   position: Joi.string().min(6),
@@ -16,130 +16,52 @@ const userSchema = Joi.object().keys({
   created_on : Joi.date()
 });
 export default  {
-  validateEmployee : (req, res, next) => {
-    const validate = userSchema.validate(req.body);
-    let { error } = validateMe;
-    if(error){
-      error = error.details[0].message
-      return res.status(400).json({success:false, error});
-    }
-    if(! phone.startsWith('+250'))
-    {
-    	return res.status(400).json({success:false, error});
-    }
-    next();
-  },
-  validateSignin : async (req, res, next) => {
-    const { email, password } = req.body;
-    if(!email || !password){
-      return userHelper.respond(res, 400, "error", 'All fields are required "(email and password)"');
+  validateQuery : (req, res, next) => {
+    let { query } = req.body;
+
+    if(query){
+      query = String(query).trim();
+      if(!(query.length >= 3))
+        return res.status(400).json({ success: false, error: "The query should have minimum 6 characters"});
     }
     else{
-      let user = await User.findbyField('email', 'users', email);
-      if(!user){
-        return userHelper.respond(res, 404, "error", "user not found");
-      }
-      else{
-        if(!userHelper.comparePasswords(password, user.password)){
-          return userHelper.respond(res, 400, "error","your password is invalid");
-        }
-        req.user = user;
-      }
+      return res.status(400).json({ success: false, error: "You should provide a valid query"});
     }
+
     next();
   },
-  checkUserToken: async (req, res, next) => {
-    passport.authenticate('jwt', (err, user, info) => {
-      // user informations can be accessed on req object as req.user
-      req.user = user;
-      if (err) {
-        return userHelper.respond(res, 520, "error", err.message);
-      }
-      // check whether the token is in headers
-      if (!user) {
-        return userHelper.respond(res, 401, "error", 'No provided token or invalid one provided');
-      }
-      next();
-    })(req, res, next);
-  },
-  exists : async (req, res, next) => {
-    const { email } = req.body;
-    const user = await User.userExists(email);
-    if(user){
-      return userHelper.respond(res, 400, "error",  "Email already taken");
-    }
+  isValidEmployee: async (req, res, next) => {
+    const { employee } = req.params;
+
+    if(! +employee)
+      return res.status(400).json({ success: false, error: "Invalid employee provided"});
+
+    // check whether a given employee exists based on his id
+    if(! await User.findbyField('id', 'employees', +employee))
+      return res.status(404).json({ success: false, error: "Employee not found!"});
     next();
-  },
-  isAdmin : (req,res,next) => {
-    const { role } = req.user;
-    if(role !== 2){
-      return userHelper.respond(res, 403, "error", "Only admins can perform this action");
-    }
-    next();
-  },
-  isSuperAdmin : (req, res, next) => {
-    const { role } = req.user;
-    if(role !== 3){
-      return userHelper.respond(res, 403, "error", "Only Super admins can perform this action");
-    }
-    next();
-  },
-  isAdminOrSuper : (req, res, next) => {
-    const { role } = req.user;
-    if(role === 1){
-      return userHelper.respond(res, 403, "error","Access forbidden(Only admins)");
-    }
-    next();
-  },
-  validateRole : (req, res, next) => {
-    const { role } = req.body;
-    const { user_id } = req.params;
-    const roleSchema =  Joi.object().keys({
-      user_id : Joi.number().integer().required(), 
-      role    : Joi.number().integer().required()
-    });
-    const validate = roleSchema.validate({ user_id, role});
-    let { error } = validate;
-    if(error){
-      error = error.details[0].message;
-      return userHelper.respond(res, 400, "error", "", error);
-    }
-    next();
-  },
-  ValidateUserId : async (req, res, next) => {
-    const { user_id } = req.params;
-    const validate = Joi.number().integer().required().validate(user_id);
-    let {error} = validate;
-    if(error){
-      error = error.details[0].message;
-      return userHelper.respond(res, 400, "error", error);
-    }
-    else{
-      const user = await User.findbyField("id", "users", +(user_id));
-      if(!user){
-        return userHelper.respond(res, 404, "error","user does not exist");
-      }
-    }
-    next();
-  },
-  validateProfileUpdate : (req, res, next) => {
-    const profileSchema = Joi.object().keys({
-      id : Joi.number().integer(),
+  },  
+
+  canbeEdited: async (req, res, next) => {
+    const { phone } = req.body;
+    let { error } = Joi.object().keys({
       email : Joi.string().email({minDomainSegments : 2}).required(),
-      first_name : Joi.string().min(6).max(20).required(),
-      last_name  : Joi.string().min(6).max(20).required(),
-      role: Joi.number().integer(),
-      address : Joi.string().min(4).max(20).required(),
-      phone : Joi.string().min(10).max(20).required(),
-      created_on : Joi.date() 
-    });
-    const validate = profileSchema.validate(req.body);
-    let {error} = validate;
+      full_name : Joi.string().min(6).max(20).required(),
+      national_id  : Joi.number().integer().min(16).max(16).required(),
+      phone: Joi.string().min(13).max(13).required(),
+    }).validate(req.body);
+
+    if(phone && ! phone.startsWith('+250'))
+        return res.status(400).json({success:false, error: 'Please use rwanda country code :(+250)'});
+
+    //  validate national id
     if(error){
       error = error.details[0].message;
-      return userHelper.respond(res, 400, "error", error);
+      error = error.includes("national_id")
+        ? "You must provide a valid national id" 
+        : error;
     }
     next();
-  }
+  },
 
 }

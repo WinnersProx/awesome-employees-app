@@ -38,7 +38,35 @@ const mailer = {
 			};
 		}
 	},
+	async sendActivationEmailToEmployee({ email, full_name, password }){
+		const { MAIL_DRIVER, MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT } = process.env;
+		const client = nodemailer.createTransport({
+			port: MAIL_PORT,
+			ignoreTLS: true,
+		});
 
+		const source = fs.readFileSync(path.join(__dirname, '../templates/employee_activation.hjs'), 'utf8');
+		const template = HandleBars.compile(source);
+		const uToken = await jwt.sign({ email }, SECRET);
+		const url = `${APP_ROOT}/api/auth/activation/${uToken}`;
+
+		const envelope = {
+			from: MAIL_SENDER,
+			to: email,
+			subject: 'Awesomity Activation Invite',
+			html: template({ full_name, url, password })
+		};
+
+		try {
+			return await client.sendMail(envelope);
+		}
+		catch(error) {
+			return {
+				status : 500,
+				error
+			};
+		}
+	},
 	async sendResetEmail({ email }){
 		const { MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT } = process.env;
 		const client = nodemailer.createTransport({

@@ -6,20 +6,29 @@ class UserModel extends Model{
   constructor(){
     super();
   }
-  async createEmployee(datas){
+  async createEmployee(datas, position = false){
     const { email, full_name, national_id, password, phone, birth_date } = datas;
+    position = position ? 'employee' : 'manager';
     const queryString = {
       text: `INSERT INTO employees
-            (email, full_name, national_id, password, phone, birth_date)
-            VALUES($1, $2, $3, $4, $5, $6) RETURNING*;`,
-      values: [email, full_name, national_id, password, phone, birth_date]
+            (email, full_name, national_id, password, phone, birth_date, position)
+            VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING*;`,
+      values: [email, full_name, national_id, password, phone, birth_date, position]
     };
     
     const { rows } = await pool.query(queryString);
-    const firstUser = await this.first();
 
     return rows[0];
   }
+  async findEmployee(query){
+    const queryString = {
+      text : `SELECT * FROM employees WHERE email=$1 OR national_id=$1 OR phone=$1`,
+      values : [query] 
+    }
+    const { rows } = await pool.query(queryString);
+    return rows[0];
+  }
+
   async first(){
     const queryString = {
       text: `SELECT id,email FROM employees LIMIT 1;`,
@@ -32,6 +41,30 @@ class UserModel extends Model{
     const queryString = {
       text : `UPDATE employees SET status=$1 WHERE email=$2 RETURNING*`,
       values : [1, email]
+    }
+    const { rows } = await pool.query(queryString);
+    return rows[0];
+  }
+  async activate(employee){
+    const queryString = {
+      text : `UPDATE employees SET status=$1 WHERE id=$2 RETURNING*`,
+      values : [1, employee]
+    }
+    const { rows } = await pool.query(queryString);
+    return rows[0];
+  }
+  async suspend(employee){
+    const queryString = {
+      text : `UPDATE employees SET status=$1 WHERE id=$2 RETURNING*`,
+      values : [0, employee]
+    }
+    const { rows } = await pool.query(queryString);
+    return rows[0];
+  }
+  async delete(employee){
+    const queryString = {
+      text : `DELETE FROM employees WHERE id=$1`,
+      values : [employee]
     }
     const { rows } = await pool.query(queryString);
     return rows[0];
@@ -52,15 +85,17 @@ class UserModel extends Model{
     const { rows } = await pool.query(queryString);
     return rows.length;
   }
-  async updateUser(datas, userId){
-    const { email, first_name, last_name, address, phone } = datas;
+  async updateEmployee({ email, full_name, national_id, phone, employee }){
     const queryString = {
-      text : `UPDATE employees SET email=$1,first_name=$2, last_name=$3, address=$4, phone=$5 WHERE id=$6 RETURNING*`,
-      values : [email,first_name,last_name,address,phone,userId]
+      text : `UPDATE employees SET email=$1, full_name=$2, national_id=$3, phone=$4 WHERE id=$5 RETURNING*`,
+      values : [email, full_name, national_id, phone, employee]
     }
     const { rows } = await pool.query(queryString);
     return rows[0];
   }
+
+
+
 }
 
 export default new UserModel();
