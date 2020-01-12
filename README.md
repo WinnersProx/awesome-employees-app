@@ -41,7 +41,7 @@
 
 Note that you need to primarily set up development tools as for the below section then go through all of the following steps sequentially.
 
-Make sure you install [Node.js](https://nodejs.org) on your machine!
+Make sure you install [Node.js](https://nodejs.org) and [Postgres](https://www.postgresql.org/) on your machine!
 
 1. Clone the github repository [here](https://github.com/WinnersProx/awesome-employees-app) and rename `.env.sample` to `.env` file and defining your environement variable, 
 
@@ -60,10 +60,11 @@ Make sure you install [Node.js](https://nodejs.org) on your machine!
 4. Consider installing MailDev globally for local emails testing by running `npm i -g maildev` in your CLI , run `maildev` upon installation completion and use [this link](http://localhost:1080) to test your emails locally.
 
 
-5. Once you're done making sure that everything is up-to-date, start enjoying it by running the following command in your command line interface and that's it :
+5. Once you're done, make sure that everything is up-to-date and start enjoying it by running the following command in your command line interface, Sweeet :
 ```sh
     $ npm start
 ```
+
 or
 
 ```sh
@@ -73,6 +74,7 @@ or
 ## Tools for Development
 
 Tools used for development of this Application are:
+
 - Framework: [Nodejs/Express](http://expressjs.io/)
 - Code Editor/IDE: [VSCode](https://code.visualstudio.com)
 - Programming language: [JavaScript(ES6)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/) ,[Typescript](https://www.typescriptlang.org/)
@@ -80,10 +82,10 @@ Tools used for development of this Application are:
 
 ## API Documentation
 
-- Postman : <Pending...>
+- Postman : [Api Documentation](https://documenter.getpostman.com/view/8469163/SWLiZ5x3?version=latest)
 
 ## Deployment
-- Heroku : <Pending...>
+- Heroku : <Implementing...>
 
 ## Learning resources
 - [Angular University](http://angular-university.io)
