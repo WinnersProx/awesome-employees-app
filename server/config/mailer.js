@@ -10,8 +10,7 @@ dotenv.config();
 const mailer = {
 
 	async sendActivationEmail({ email, full_name }){
-		const { MAIL_DRIVER, MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT } = process.env;
-		const { MAIL_DRIVER, MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT, ETHEREAL_USERNAME, ETHEREAL_PASSWORD, NODE_ENV } = process.env;
+		const { MAIL_DRIVER, MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT, ETHEREAL_USER, ETHEREAL_PASSWORD, NODE_ENV } = process.env;
 		
 		if(NODE_ENV == 'production'){
 			// use Ethereal SMTP Platform to send emails -> check ethereal.email
@@ -19,9 +18,9 @@ const mailer = {
 				host: 'smtp.ethereal.email',
 				port: 587,
 				auth: {
-	        user: ETHEREAL_USER,
-	        pass: ETHEREAL_PASSWORD
-    		}
+					user: ETHEREAL_USER,
+					pass: ETHEREAL_PASSWORD
+				}
 			});
 		}
 		else{ 
@@ -55,7 +54,7 @@ const mailer = {
 		}
 	},
 	async sendActivationEmailToEmployee({ email, full_name, password }){
-		const { MAIL_DRIVER, MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT, ETHEREAL_USERNAME, ETHEREAL_PASSWORD, NODE_ENV } = process.env;
+		const { MAIL_DRIVER, MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT, ETHEREAL_USER, ETHEREAL_PASSWORD, NODE_ENV } = process.env;
 		
 		if(NODE_ENV == 'production'){
 			// use Ethereal SMTP Platform to send emails -> check ethereal.email
@@ -63,9 +62,9 @@ const mailer = {
 				host: 'smtp.ethereal.email',
 				port: 587,
 				auth: {
-	        user: ETHEREAL_USER,
-	        pass: ETHEREAL_PASSWORD
-    		}
+					user: ETHEREAL_USER,
+					pass: ETHEREAL_PASSWORD
+				}
 			});
 		}
 		else{ 
@@ -100,7 +99,7 @@ const mailer = {
 	},
 	async sendResetEmail({ email }){
 		const { MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT } = process.env;
-		const { MAIL_DRIVER, MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT, ETHEREAL_USERNAME, ETHEREAL_PASSWORD, NODE_ENV } = process.env;
+		const { MAIL_DRIVER, MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT, ETHEREAL_USER, ETHEREAL_PASSWORD, NODE_ENV } = process.env;
 		
 		if(NODE_ENV == 'production'){
 			// use Ethereal SMTP Platform to send emails -> check ethereal.email
@@ -108,9 +107,9 @@ const mailer = {
 				host: 'smtp.ethereal.email',
 				port: 587,
 				auth: {
-	        user: ETHEREAL_USER,
-	        pass: ETHEREAL_PASSWORD
-    		}
+					user: ETHEREAL_USER,
+					pass: ETHEREAL_PASSWORD
+				}
 			});
 		}
 		else{ 
