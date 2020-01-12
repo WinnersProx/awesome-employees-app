@@ -85,7 +85,7 @@ Tools used for development of this Application are:
 - Postman : [Api Documentation](https://documenter.getpostman.com/view/8469163/SWLiZ5x3?version=latest)
 
 ## Deployment
-- Heroku : <Implementing...>
+- Heroku : [Deployed Api](https://awesome-employees-app.herokuapp.com/api)
 
 ## Learning resources
 - [Angular University](http://angular-university.io)

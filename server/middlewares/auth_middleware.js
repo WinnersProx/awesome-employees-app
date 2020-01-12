@@ -83,40 +83,11 @@ export default  {
     }
     next();
   },
-  isAdmin : (req,res,next) => {
-    const { role } = req.user;
-    if(role !== 2){
-      return userHelper.respond(res, 403, "error", "Only admins can perform this action");
-    }
-    next();
-  },
   isManager : (req, res, next) => {
     const { position } = req.user;
     if(position !== 'manager')
       return userHelper.respond(res, 403, "error", "You are not allowed to access this resource");
     
-    next();
-  },
-  isAdminOrSuper : (req, res, next) => {
-    const { role } = req.user;
-    if(role === 1){
-      return userHelper.respond(res, 403, "error","Access forbidden(Only admins)");
-    }
-    next();
-  },
-  validateRole : (req, res, next) => {
-    const { role } = req.body;
-    const { user_id } = req.params;
-    const roleSchema =  Joi.object().keys({
-      user_id : Joi.number().integer().required(), 
-      role    : Joi.number().integer().required()
-    });
-    const validate = roleSchema.validate({ user_id, role});
-    let { error } = validate;
-    if(error){
-      error = error.details[0].message;
-      return userHelper.respond(res, 400, "error", "", error);
-    }
     next();
   },
   ValidateUserId : async (req, res, next) => {
@@ -132,25 +103,6 @@ export default  {
       if(!user){
         return userHelper.respond(res, 404, "error","user does not exist");
       }
-    }
-    next();
-  },
-  validateProfileUpdate : (req, res, next) => {
-    const profileSchema = Joi.object().keys({
-      id : Joi.number().integer(),
-      email : Joi.string().email({minDomainSegments : 2}).required(),
-      first_name : Joi.string().min(6).max(20).required(),
-      last_name  : Joi.string().min(6).max(20).required(),
-      role: Joi.number().integer(),
-      address : Joi.string().min(4).max(20).required(),
-      phone : Joi.string().min(10).max(20).required(),
-      created_on : Joi.date() 
-    });
-    const validate = profileSchema.validate(req.body);
-    let {error} = validate;
-    if(error){
-      error = error.details[0].message;
-      return userHelper.respond(res, 400, "error", error);
     }
     next();
   },
