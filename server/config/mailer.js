@@ -11,10 +11,26 @@ const mailer = {
 
 	async sendActivationEmail({ email, full_name }){
 		const { MAIL_DRIVER, MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT } = process.env;
-		const client = nodemailer.createTransport({
-			port: MAIL_PORT,
-			ignoreTLS: true,
-		});
+		const { MAIL_DRIVER, MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT, ETHEREAL_USERNAME, ETHEREAL_PASSWORD, NODE_ENV } = process.env;
+		
+		if(NODE_ENV == 'production'){
+			// use Ethereal SMTP Platform to send emails -> check ethereal.email
+			const client = nodemailer.createTransport({
+				host: 'smtp.ethereal.email',
+				port: 587,
+				auth: {
+	        user: ETHEREAL_USER,
+	        pass: ETHEREAL_PASSWORD
+    		}
+			});
+		}
+		else{ 
+			// use maildev in development
+			const client = nodemailer.createTransport({
+				port: MAIL_PORT,
+				ignoreTLS: true,
+			});
+		}
 
 		const source = fs.readFileSync(path.join(__dirname, '../templates/mail_activation.hjs'), 'utf8');
 		const template = HandleBars.compile(source);
@@ -44,7 +60,7 @@ const mailer = {
 		if(NODE_ENV == 'production'){
 			// use Ethereal SMTP Platform to send emails -> check ethereal.email
 			const client = nodemailer.createTransport({
-				host: 'smtp.ethereal.email'
+				host: 'smtp.ethereal.email',
 				port: 587,
 				auth: {
 	        user: ETHEREAL_USER,
@@ -84,10 +100,26 @@ const mailer = {
 	},
 	async sendResetEmail({ email }){
 		const { MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT } = process.env;
-		const client = nodemailer.createTransport({
-			port: MAIL_PORT,
-			ignoreTLS: true,
-		});
+		const { MAIL_DRIVER, MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT, ETHEREAL_USERNAME, ETHEREAL_PASSWORD, NODE_ENV } = process.env;
+		
+		if(NODE_ENV == 'production'){
+			// use Ethereal SMTP Platform to send emails -> check ethereal.email
+			const client = nodemailer.createTransport({
+				host: 'smtp.ethereal.email',
+				port: 587,
+				auth: {
+	        user: ETHEREAL_USER,
+	        pass: ETHEREAL_PASSWORD
+    		}
+			});
+		}
+		else{ 
+			// use maildev in development
+			const client = nodemailer.createTransport({
+				port: MAIL_PORT,
+				ignoreTLS: true,
+			});
+		}
 
 		const source = fs.readFileSync(path.join(__dirname, '../templates/reset_email.hjs'), 'utf8');
 		const template = HandleBars.compile(source);
