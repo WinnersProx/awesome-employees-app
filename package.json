@@ -4,7 +4,7 @@
   "description": "An api for employees management",
   "main": "index.js",
   "scripts": {
-    "start": "npm run seeder && babel-node index.js",
+    "start": "npm run migrate && babel-node index.js",
     "start-dev": "nodemon index --exec babel-node",
     "build": "babel index.js --out-dir build",
     "lint": "eslint ./*.js",

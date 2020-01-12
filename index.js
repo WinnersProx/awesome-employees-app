@@ -26,7 +26,7 @@ app.use('**', (req, res) => res.status(404).send({
 }));
 
 app.listen(PORT, () => {
-  console.log(`AwesomeEmployees is listening to you on port :--${PORT}`)
+  console.log(`AwesomeEmployees is listening to you on port : ${PORT}`)
 });
 
 export default app;
