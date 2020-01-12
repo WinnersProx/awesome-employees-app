@@ -98,7 +98,6 @@ const mailer = {
 		}
 	},
 	async sendResetEmail({ email }){
-		const { MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT } = process.env;
 		const { MAIL_DRIVER, MAIL_PORT, MAIL_SENDER, SECRET, APP_ROOT, ETHEREAL_USER, ETHEREAL_PASSWORD, NODE_ENV } = process.env;
 		
 		if(NODE_ENV == 'production'){
