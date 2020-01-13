@@ -9,16 +9,15 @@ dotenv.config();
 
 const mailer = {
 	transport(){
-		const { MAIL_PORT, MAIL_SENDER, ETHEREAL_USER, ETHEREAL_PASSWORD, NODE_ENV } = process.env;
+		const { MAIL_PORT, MAIL_SENDER, NODE_ENV, GMAIL_USER, GMAIL_PASS } = process.env;
 		
 		if(NODE_ENV == 'production'){
 			// use Ethereal SMTP Platform to send emails -> check ethereal.email
 			return {
-				host: 'smtp.ethereal.email',
-				port: 587,
+				service: 'gmail',
 				auth: {
-					user: ETHEREAL_USER,
-					pass: ETHEREAL_PASSWORD
+					user: GMAIL_USER,
+					pass: GMAIL_PASS
 				}
 			};
 		}
