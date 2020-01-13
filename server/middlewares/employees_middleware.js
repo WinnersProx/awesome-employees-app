@@ -8,7 +8,7 @@ const employeeSchema = Joi.object().keys({
   email : Joi.string().email({minDomainSegments : 2}).required(),
   password : Joi.string().min(6),
   full_name : Joi.string().min(6).max(20).required(),
-  national_id  : Joi.number().integer().min(16).required(),
+  national_id  : Joi.string().min(16).max(16).required(),
   phone: Joi.string().min(13).max(13).required(),
   birth_date: Joi.date(),
   position: Joi.string().min(6),
@@ -47,19 +47,16 @@ export default  {
     let { error } = Joi.object().keys({
       email : Joi.string().email({minDomainSegments : 2}).required(),
       full_name : Joi.string().min(6).max(20).required(),
-      national_id  : Joi.number().integer().min(16).max(16).required(),
+      national_id  : Joi.string().min(16).max(16).required(),
       phone: Joi.string().min(13).max(13).required(),
     }).validate(req.body);
 
     if(phone && ! phone.startsWith('+250'))
         return res.status(400).json({success:false, error: 'Please use rwanda country code :(+250)'});
 
-    //  validate national id
     if(error){
       error = error.details[0].message;
-      error = error.includes("national_id")
-        ? "You must provide a valid national id" 
-        : error;
+      return res.status(400).json({success:false, error});
     }
     next();
   },

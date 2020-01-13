@@ -57,15 +57,14 @@ Make sure you install [Node.js](https://nodejs.org) and [Postgres](https://www.p
     $ npm run migrate
 ```
 
-4. Consider installing MailDev globally for local emails testing by running `npm i -g maildev` in your CLI , run `maildev` upon installation completion and use [this link](http://localhost:1080) to test your emails locally.
+4. Consider installing MailDev globally for local emails testing by running `npm i -g maildev` in your CLI , run `maildev` upon successful installation and use [this link](http://localhost:1080) to test your emails locally.
 
 
 5. Once you're done, make sure that everything is up-to-date and start enjoying it by running the following command in your command line interface, Sweeet :
-```sh
-    $ npm start
-```
 
-or
+```sh $ npm start
+```
+Or
 
 ```sh
 	$ npm run start-dev
