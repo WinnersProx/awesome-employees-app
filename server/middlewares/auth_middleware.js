@@ -8,7 +8,7 @@ const employeesSchema = Joi.object().keys({
   email : Joi.string().email({minDomainSegments : 2}).required(),
   password : Joi.string().min(6),
   full_name : Joi.string().min(6).max(20).required(),
-  national_id  : Joi.number().integer().min(16).required(),
+  national_id  : Joi.string().min(16).max(16).required(),
   phone: Joi.string().min(13).max(13).required(),
   birth_date: Joi.date(),
   position: Joi.string().min(6),
@@ -19,7 +19,7 @@ const employeesSchema = Joi.object().keys({
 export default  {
   validateUser : (req, res, next) =>{
     const validateMe = employeesSchema.validate(req.body);
-    const { phone, birth_date } = req.body;
+    const { phone, birth_date, national_id } = req.body;
     let { error } = validateMe;
 
     if(phone && ! phone.startsWith('+250'))
@@ -28,18 +28,16 @@ export default  {
     //  validate national id
     if(error){
       error = error.details[0].message;
-      error = error.includes("national_id")
-        ? "You must provide a valid national id" 
-        : error;
-      
       return userHelper.respond(res, 400, "error", error);
     }
 
-    // validate majority
-    if(! userHelper.isMajor(birth_date)){
-      console.log(userHelper.isMajor(birth_date));
+    // checks whether a given national id is a valid rwandan one
+    if(! +(national_id) )
+      return res.status(400).json({success: false, error: "You should provide a valid rwandan national id" });
+
+    // validate employee majority
+    if(! userHelper.isMajor(birth_date))
       return res.status(400).json({ success: false, error : "Sorry, you're not eligible to register!"});
-    }
 
     next();
   },

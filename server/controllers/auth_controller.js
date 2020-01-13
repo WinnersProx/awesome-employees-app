@@ -31,7 +31,6 @@ const employeesController = {
   activateEmployeeAccount: async (req, res) => {
     const { token } = req.params;
     const { SECRET } = process.env;
-    console.log(jwt.verify(token, SECRET));
     try{
       if(! token)
         return res.status(400).send({ success: false, error: "Wrong link provided!"});
