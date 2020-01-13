@@ -55,7 +55,9 @@
         <br><br> You're almost ready to start growing in your career.
         Simply click the button below to verify your email address.</div>
       <a style="color: white" class="btn btn-primary mt-5" href={{{url}}} target="_blank">Activate your account now</a>
-      <br>
+      <br>Can't see the button ? Use
+      <a href={{{url}}} class="text-primary" target="_blank">this link</a>
+      <br><br>
       Can't wait,<br><br>
       Your friends at <strong class="text-primary">Awesomity Lab!</strong>
       <br><br>

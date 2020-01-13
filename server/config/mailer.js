@@ -41,7 +41,7 @@ const mailer = {
 		const url = `${APP_ROOT}/api/auth/activation/${uToken}`;
 
 		const envelope = {
-			from: MAIL_SENDER,
+			from: `"AwesomeEmployees" <${MAIL_SENDER}>`,
 			to: email,
 			subject: 'Account Activation',
 			html: template({ full_name, url})
@@ -69,7 +69,7 @@ const mailer = {
 		const url = `${APP_ROOT}/api/auth/activation/${uToken}`;
 
 		const envelope = {
-			from: MAIL_SENDER,
+			from: `"AwesomeEmployees" <${MAIL_SENDER}>`,
 			to: email,
 			subject: 'Awesomity Activation Invite',
 			html: template({ full_name, url, password })
@@ -97,7 +97,7 @@ const mailer = {
 		const url = `${APP_ROOT}/api/auth/reset/${uToken}`;
 
 		const envelope = {
-			from: MAIL_SENDER,
+			from: `"AwesomeEmployees" <${MAIL_SENDER}>`,
 			to: email,
 			subject: 'Password Reset',
 			html: template({ url })
