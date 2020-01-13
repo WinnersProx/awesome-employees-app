@@ -9,16 +9,15 @@ dotenv.config();
 
 const mailer = {
 	transport(){
-		const { MAIL_PORT, MAIL_SENDER, ETHEREAL_USER, ETHEREAL_PASSWORD, NODE_ENV } = process.env;
+		const { MAIL_PORT, MAIL_SENDER, NODE_ENV, GMAIL_USER, GMAIL_PASS } = process.env;
 		
 		if(NODE_ENV == 'production'){
 			// use Ethereal SMTP Platform to send emails -> check ethereal.email
 			return {
-				host: 'smtp.ethereal.email',
-				port: 587,
+				service: 'gmail',
 				auth: {
-					user: ETHEREAL_USER,
-					pass: ETHEREAL_PASSWORD
+					user: GMAIL_USER,
+					pass: GMAIL_PASS
 				}
 			};
 		}
@@ -42,7 +41,7 @@ const mailer = {
 		const url = `${APP_ROOT}/api/auth/activation/${uToken}`;
 
 		const envelope = {
-			from: MAIL_SENDER,
+			from: `"AwesomeEmployees" <${MAIL_SENDER}>`,
 			to: email,
 			subject: 'Account Activation',
 			html: template({ full_name, url})
@@ -70,7 +69,7 @@ const mailer = {
 		const url = `${APP_ROOT}/api/auth/activation/${uToken}`;
 
 		const envelope = {
-			from: MAIL_SENDER,
+			from: `"AwesomeEmployees" <${MAIL_SENDER}>`,
 			to: email,
 			subject: 'Awesomity Activation Invite',
 			html: template({ full_name, url, password })
@@ -98,7 +97,7 @@ const mailer = {
 		const url = `${APP_ROOT}/api/auth/reset/${uToken}`;
 
 		const envelope = {
-			from: MAIL_SENDER,
+			from: `"AwesomeEmployees" <${MAIL_SENDER}>`,
 			to: email,
 			subject: 'Password Reset',
 			html: template({ url })
