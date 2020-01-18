@@ -51,7 +51,7 @@
       <h1>Activate your account!</h1>
       <div>Hey {{{ full_name }}},<br><br>
         Congrats once again, We invite you to officialy become an
-        <strong class="text-primary">Awesomity Lab</strong> employee
+        <strong class="text-primary">Awesome</strong> employee
         <br><br> You're one step closer to your career growth.
         Simply click the button below to verify your email address within one day.
         <br>
@@ -62,7 +62,7 @@
       <a href={{{url}}} class="text-primary" target="_blank">this link</a>
       <br><br>
       Can't wait,<br><br>
-      Your friends at <strong class="text-primary">Awesomity Lab!</strong>
+      Your friends at <strong class="text-primary">Awesome Employees!</strong>
       <br><br>
       Learn more about us <a href="https://awesomity.rw" class="text-primary" target="_blank">here</a>
     </div>
